@@ -1,13 +1,15 @@
 {
-  "name": "color",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "@jrc03c/color",
+  "version": "0.0.1",
+  "description": "a color class to help with converting from one notation to another (e.g., hex to rgb)",
+  "main": "color.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "color"
+  ],
+  "author": "jrc03c",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.24.0",
