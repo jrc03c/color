@@ -38,6 +38,7 @@ const a = Color.fromRGB(0, 128, 255)
 const b = Color.fromHSL(90, 0, 1)
 const c = Color.fromHSV(180, 0.25, 0.75)
 const d = Color.fromHex("#ffeedd") // or without "#"
+const e = Color.random()
 ```
 
 It's also possible to create colors by calling the constructor to instantiate a new `Color` and then setting the instance's component values as in the examples in the next section.

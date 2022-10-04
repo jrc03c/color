@@ -32,6 +32,12 @@ class Color {
     return out
   }
 
+  static random() {
+    const out = new Color()
+    out.hsl = [Math.random() * 360, Math.random(), Math.random()]
+    return out
+  }
+
   constructor() {
     const self = this
 
