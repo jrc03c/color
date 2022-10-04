@@ -89,3 +89,4 @@ console.log(c.hex.toCSSString())
 # To do
 
 - Add CMYK support
+- Add a `print` method to display the color in the console
