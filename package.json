@@ -2,7 +2,7 @@
   "name": "@jrc03c/color",
   "version": "0.0.1",
   "description": "a color class to help with converting from one notation to another (e.g., hex to rgb)",
-  "main": "color.js",
+  "main": "src/color.js",
   "scripts": {
     "build": "esbuild src/color.js --bundle --outfile=dist/color.js --minify",
     "watch": "esbuild src/color.js --bundle --outfile=dist/color.js --minify --watch",
