@@ -8,6 +8,30 @@ const {
 } = require("./helpers.js")
 
 class Color {
+  static fromRGB(r, g, b) {
+    const out = new Color()
+    out.rgb = [r, g, b]
+    return out
+  }
+
+  static fromHSL(h, s, l) {
+    const out = new Color()
+    out.hsl = [h, s, l]
+    return out
+  }
+
+  static fromHSV(h, s, v) {
+    const out = new Color()
+    out.hsv = [h, s, v]
+    return out
+  }
+
+  static fromHex(hex) {
+    const out = new Color()
+    out.hex = hex
+    return out
+  }
+
   constructor() {
     const self = this
 
