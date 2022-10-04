@@ -1,4 +1,4 @@
-function RGBAToHSLA(r, g, b, a) {
+function RGBToHSL(r, g, b) {
   if (
     isNaN(r) ||
     isNaN(g) ||
@@ -39,22 +39,22 @@ function RGBAToHSLA(r, g, b, a) {
       : (max - midrange) / Math.min(midrange, 1 - midrange)
 
   const lightness = midrange
-  return { h: hue, s: saturation, l: lightness, a: a || 1 }
+  return { h: hue, s: saturation, l: lightness }
 }
 
-function RGBAToHSVA(r, g, b, a) {}
+function RGBToHSV(r, g, b) {}
 
-function RGBAToHex(r, g, b, a) {}
+function RGBToHex(r, g, b) {}
 
-function HSLAToRGBA(h, s, l, a) {}
+function HSLToRGB(h, s, l) {}
 
-function HSLAToHSVA(h, s, l, a) {}
+function HSLToHSV(h, s, l) {}
 
-function HSLAToHex(h, s, l, a) {}
+function HSLToHex(h, s, l) {}
 
-function HSVAToRGBA(h, s, v, a) {}
+function HSVToRGB(h, s, v) {}
 
-function HSVAToHSLA(h, s, v, a) {
+function HSVToHSL(h, s, v) {
   if (
     isNaN(h) ||
     isNaN(s) ||
@@ -78,14 +78,26 @@ function HSVAToHSLA(h, s, v, a) {
       ? 0
       : (v - lightness) / Math.min(lightness, 1 - lightness)
 
-  return { h, s: saturation, l: lightness, a: a || 1 }
+  return { h, s: saturation, l: lightness }
 }
 
-function HSVAToHex(h, s, v, a) {}
+function HSVToHex(h, s, v) {}
 
-function hexToRGBA(hex) {}
+function hexToRGB(hex) {
+  if (typeof hex !== "string") {
+    throw new Error("Hex values must be strings of length 6 or 8!")
+  }
 
-function hexToHSLA(hex) {
+  if (hex.length !== 6 && hex.length !== 8) {
+    throw new Error("Hex values must be strings of length 6 or 8!")
+  }
+
+  const r = parseInt(hex.substring(0, 2), 16)
+  const g = parseInt(hex.substring(2, 4), 16)
+  const b = parseInt(hex.substring(4, 6), 16)
+}
+
+function hexToHSL(hex) {
   if (typeof hex !== "string") {
     throw new Error("Hex values must be strings!")
   }
@@ -99,11 +111,10 @@ function hexToHSLA(hex) {
   const r = parseInt(hex.substring(0, 2), 16)
   const g = parseInt(hex.substring(2, 4), 16)
   const b = parseInt(hex.substring(4, 6), 16)
-  const a = hex.length === 8 ? parseInt(hex.substring(6, 8), 16) : 1
-  return RGBAToHSLA(r, g, b, a)
+  return RGBToHSL(r, g, b)
 }
 
-function hexToHSVA(hex) {}
+function hexToHSV(hex) {}
 
 class Color {
   constructor() {
@@ -112,7 +123,6 @@ class Color {
     let _hue = 0
     let _saturation = 1
     let _lightness = 0.5
-    let _alpha = 1
 
     Object.defineProperty(self, "_hue", {
       configurable: false,
@@ -170,147 +180,111 @@ class Color {
         _lightness = v
       },
     })
-
-    Object.defineProperty(self, "_alpha", {
-      configurable: false,
-      enumerable: false,
-
-      get() {
-        return _alpha
-      },
-
-      set(v) {
-        if (isNaN(v) || v < 0 || v > 1) {
-          throw new Error(
-            "The new `_saturation` value must be a number in the range [0, 1]!"
-          )
-        }
-      },
-    })
   }
 
-  get rgba() {
+  get rgb() {
     const self = this
 
-    const out = HSLAToRGBA(
-      self._hue,
-      self._saturation,
-      self._lightness,
-      self._alpha
-    )
+    const out = HSLToRGB(self._hue, self._saturation, self._lightness)
 
     out.toCSSString = function () {
-      return `rgba(${out.r}, ${out.g}, ${out.b}, ${out.a})`
+      return `rgb(${out.r}, ${out.g}, ${out.b})`
     }
 
     return out
   }
 
-  set rgba(data) {
+  set rgb(data) {
     if (typeof data === "object" && data !== null) {
-      data = [data.r, data.g, data.b, data.a]
+      data = [data.r, data.g, data.b]
     }
 
     if (!(data instanceof Array)) {
       throw new Error(
-        "The `rgba` property must be assigned with an array in the form [r, g, b, a] or with an object in the form {r: 0, g: 0, b: 0, a: 0}!"
+        "The `rgb` property must be assigned with an array in the form [r, g, b] or with an object in the form {r: 0, g: 0, b: 0}!"
       )
     }
 
-    const [r, g, b, a] = data
+    const [r, g, b] = data
     const self = this
-    const temp = RGBAToHSLA(r, g, b, a)
+    const temp = RGBToHSL(r, g, b)
     self._hue = temp.h
     self._saturation = temp.s
     self._lightness = temp.l
-    self._alpha = temp.a
   }
 
-  get hsla() {
+  get hsl() {
     const self = this
 
     const out = {
       h: self._hue,
       s: self._saturation,
       l: self._lightness,
-      a: self._alpha,
     }
 
     out.toCSSString = function () {
-      return `hsla(${out.h}, ${out.s}, ${out.l}, ${out.a})`
+      return `hsl(${out.h}, ${out.s}, ${out.l})`
     }
 
     return out
   }
 
-  set hsla(data) {
+  set hsl(data) {
     const self = this
 
     if (typeof data === "object" && data !== null) {
-      data = [data.h, data.s, data.l, data.a]
+      data = [data.h, data.s, data.l]
     }
 
     if (!(data instanceof Array)) {
       throw new Error(
-        "The `hsla` property must be assigned with an array in the form [h, s, l, a] or with an object in the form {h: 0, s: 0, l: 0, a: 0}!"
+        "The `hsl` property must be assigned with an array in the form [h, s, l] or with an object in the form {h: 0, s: 0, l: 0}!"
       )
     }
 
-    const [h, s, l, a] = data
+    const [h, s, l] = data
     self._hue = h
     self._saturation = s
     self._lightness = l
-    self._alpha = a
   }
 
-  get hsva() {
+  get hsv() {
     const self = this
 
-    const out = HSLAToHSVA(
-      self._hue,
-      self._saturation,
-      self._lightness,
-      self._alpha
-    )
+    const out = HSLToHSV(self._hue, self._saturation, self._lightness)
 
     out.toCSSString = function () {
-      return `hsva(${out.h}, ${out.s}, ${out.v}, ${out.a})`
+      return `hsv(${out.h}, ${out.s}, ${out.v})`
     }
 
     return out
   }
 
-  set hsva(data) {
+  set hsv(data) {
     const self = this
 
     if (typeof data === "object" && data !== null) {
-      data = [data.h, data.s, data.v, data.a]
+      data = [data.h, data.s, data.v]
     }
 
     if (!(data instanceof Array)) {
       throw new Error(
-        "The `hsva` property must be assigned with an array in the form [h, s, v, a] or with an object in the form {h: 0, s: 0, v: 0, a: 0}!"
+        "The `hsv` property must be assigned with an array in the form [h, s, v] or with an object in the form {h: 0, s: 0, v: 0}!"
       )
     }
 
-    const [h, s, v, a] = data
-    const temp = HSVAToHSLA(h, s, v, a)
+    const [h, s, v] = data
+    const temp = HSVToHSL(h, s, v)
     self._hue = temp.h
     self._saturation = temp.s
     self._lightness = temp.l
-    self._alpha = temp.a
   }
 
   get hex() {
     const self = this
 
     const out = {
-      value: HSLAToHex(
-        self._hue,
-        self._saturation,
-        self._lightness,
-        self._alpha
-      ),
+      value: HSLToHex(self._hue, self._saturation, self._lightness),
     }
 
     out.toCSSString = function () {
@@ -322,11 +296,10 @@ class Color {
 
   set hex(hex) {
     const self = this
-    const temp = hexToHSLA(hex)
+    const temp = hexToHSL(hex)
     self._hue = temp.h
     self._saturation = temp.s
     self._lightness = temp.l
-    self._alpha = temp.a
   }
 }
 
