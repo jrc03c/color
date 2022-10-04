@@ -8,6 +8,21 @@ This is just a little helper tool to convert between color representations (e.g.
 npm install --save https://github.com/jrc03c/color
 ```
 
+Import into Node and/or a bundled application:
+
+```js
+const Color = require("@jrc03c/color")
+```
+
+Or insert in a script tag:
+
+```html
+<script src="node_modules/@jrc03c/color/dist/color.js"></script>
+<script>
+  const c = Color.fromRGB(0, 128, 255)
+</script>
+```
+
 # Usage
 
 ## Creating colors
