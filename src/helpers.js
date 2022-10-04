@@ -146,7 +146,7 @@ function HSVToHSL(h, s, v) {
     )
   }
 
-  if (isNaN(v) || v < 0 || v > 0) {
+  if (isNaN(v) || v < 0 || v > 1) {
     throw new Error(
       "HSV values must be in the ranges [0, 360), [0, 1], and [0, 1] respectively!"
     )
@@ -172,6 +172,8 @@ function hexToRGB(hex) {
     throw new Error("Hex values must be strings of length 6 or 8!")
   }
 
+  hex = hex.replaceAll("#", "").trim()
+
   if (hex.length !== 6 && hex.length !== 8) {
     throw new Error("Hex values must be strings of length 6 or 8!")
   }
@@ -189,7 +191,7 @@ function hexToHSL(hex) {
 
   hex = hex.replaceAll("#", "").trim()
 
-  if (hex.length !== 6 || hex.length !== 8) {
+  if (hex.length !== 6 && hex.length !== 8) {
     throw new Error("Hex values must be 6 or 8 characters in length!")
   }
 
