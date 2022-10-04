@@ -4,8 +4,11 @@ This is just a little helper tool to convert between color representations (e.g.
 
 # Installation
 
+Install directly from the repo or from the NPM registry:
+
 ```bash
 npm install --save https://github.com/jrc03c/color
+npm install --save @jrc03c/color
 ```
 
 Import into Node and/or a bundled application:
@@ -22,6 +25,8 @@ Or insert in a script tag:
   const c = Color.fromRGB(0, 128, 255)
 </script>
 ```
+
+Alternatively, download from a CDN here: [https://unpkg.com/@jrc03c/color/dist/color.js](https://unpkg.com/@jrc03c/color/dist/color.js)
 
 # Usage
 
