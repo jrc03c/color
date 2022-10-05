@@ -17,4 +17,17 @@ test("tests that the Color class works as expected", () => {
   expect(Math.abs(c.rgb.b - 174)).toBeLessThan(1)
 
   expect(c.hex.value).toBe("2fbcae")
+
+  c.hsl = [123, 0.45, 0.67]
+  expect(c.hsl.h).toBe(123)
+  expect(c.hsl.s).toBe(0.45)
+  expect(c.hsl.l).toBe(0.67)
+
+  c.hsv = [234, 0.56, 0.78]
+  expect(c.hsv.h).toBe(234)
+  expect(c.hsv.s).toBe(0.56)
+  expect(c.hsv.v).toBe(0.78)
+
+  c.hex = "ffeedd"
+  expect(c.hex.value).toBe("ffeedd")
 })
