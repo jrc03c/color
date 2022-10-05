@@ -46,33 +46,6 @@ function RGBToHSL(r, g, b) {
   return { h: hue, s: saturation, l: lightness }
 }
 
-function RGBToHSV(r, g, b) {
-  const hsl = RGBToHSL(r, g, b)
-  const h = hsl.h
-  const v = hsl.l + hsl.s * Math.min(hsl.l, 1 - hsl.l)
-  const s = v === 0 ? 0 : 2 * (1 - hsl.l / v)
-  return { h, s, v }
-}
-
-function RGBToHex(r, g, b) {
-  if (isNaN(r) || r < 0 || r > 255) {
-    throw new Error("RGB values must be in the range [0, 255]!")
-  }
-
-  if (isNaN(g) || g < 0 || g > 255) {
-    throw new Error("RGB values must be in the range [0, 255]!")
-  }
-
-  if (isNaN(b) || b < 0 || b > 255) {
-    throw new Error("RGB values must be in the range [0, 255]!")
-  }
-
-  r = leftPad(parseInt(r).toString(16), 2)
-  g = leftPad(parseInt(g).toString(16), 2)
-  b = leftPad(parseInt(b).toString(16), 2)
-  return { value: `${r}${g}${b}` }
-}
-
 function HSLToRGB(h, s, l) {
   if (isNaN(h) || h < 0 || h >= 360) {
     throw new Error(
@@ -119,13 +92,54 @@ function HSLToRGB(h, s, l) {
 }
 
 function HSLToHSV(h, s, l) {
-  const { r, g, b } = HSLToRGB(h, s, l)
-  return RGBToHSV(r, g, b)
+  if (isNaN(h) || h < 0 || h >= 360) {
+    throw new Error(
+      "HSL values must be in the ranges [0, 360), [0, 1], and [0, 1] respectively!"
+    )
+  }
+
+  if (isNaN(s) || s < 0 || s > 1) {
+    throw new Error(
+      "HSL values must be in the ranges [0, 360), [0, 1], and [0, 1] respectively!"
+    )
+  }
+
+  if (isNaN(l) || l < 0 || l > 1) {
+    throw new Error(
+      "HSL values must be in the ranges [0, 360), [0, 1], and [0, 1] respectively!"
+    )
+  }
+
+  const hue = h
+  const value = l + s * Math.min(l, 1 - l)
+  const saturation = value === 0 ? 0 : 2 * (1 - l / value)
+  return { h: hue, s: saturation, v: value }
 }
 
 function HSLToHex(h, s, l) {
+  if (isNaN(h) || h < 0 || h >= 360) {
+    throw new Error(
+      "HSL values must be in the ranges [0, 360), [0, 1], and [0, 1] respectively!"
+    )
+  }
+
+  if (isNaN(s) || s < 0 || s > 1) {
+    throw new Error(
+      "HSL values must be in the ranges [0, 360), [0, 1], and [0, 1] respectively!"
+    )
+  }
+
+  if (isNaN(l) || l < 0 || l > 1) {
+    throw new Error(
+      "HSL values must be in the ranges [0, 360), [0, 1], and [0, 1] respectively!"
+    )
+  }
+
   const { r, g, b } = HSLToRGB(h, s, l)
-  return RGBToHex(r, g, b)
+  const rHex = leftPad(r.toString(16), 2)
+  const gHex = leftPad(g.toString(16), 2)
+  const bHex = leftPad(b.toString(16), 2)
+  return { value: `${rHex}${gHex}${bHex}` }
 }
 
 function HSVToHSL(h, s, v) {
@@ -164,8 +178,8 @@ function hexToHSL(hex) {
 
   hex = hex.replaceAll("#", "").trim()
 
-  if (hex.length !== 6 && hex.length !== 8) {
-    throw new Error("Hex values must be 6 or 8 characters in length!")
+  if (hex.length !== 6) {
+    throw new Error("Hex values must be 6 in length!")
   }
 
   const r = parseInt(hex.substring(0, 2), 16)
