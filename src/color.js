@@ -5,7 +5,7 @@ const {
   HSLToRGB,
   HSVToHSL,
   RGBToHSL,
-} = require("./helpers.js")
+} = require("./helpers")
 
 class Color {
   static fromRGB(r, g, b) {
