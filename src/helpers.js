@@ -128,11 +128,6 @@ function HSLToHex(h, s, l) {
   return RGBToHex(r, g, b)
 }
 
-function HSVToRGB(h, s, v) {
-  const hsl = HSVToHSL(h, s, v)
-  return HSLToRGB(hsl.h, hsl.s, hsl.l)
-}
-
 function HSVToHSL(h, s, v) {
   if (isNaN(h) || h < 0 || h >= 360) {
     throw new Error(
@@ -162,28 +157,6 @@ function HSVToHSL(h, s, v) {
   return { h, s: saturation, l: lightness }
 }
 
-function HSVToHex(h, s, v) {
-  const { r, g, b } = HSVToRGB(h, s, v)
-  return RGBToHex(r, g, b)
-}
-
-function hexToRGB(hex) {
-  if (typeof hex !== "string") {
-    throw new Error("Hex values must be strings of length 6 or 8!")
-  }
-
-  hex = hex.replaceAll("#", "").trim()
-
-  if (hex.length !== 6 && hex.length !== 8) {
-    throw new Error("Hex values must be strings of length 6 or 8!")
-  }
-
-  const r = parseInt(hex.substring(0, 2), 16)
-  const g = parseInt(hex.substring(2, 4), 16)
-  const b = parseInt(hex.substring(4, 6), 16)
-  return { r, g, b }
-}
-
 function hexToHSL(hex) {
   if (typeof hex !== "string") {
     throw new Error("Hex values must be strings!")
@@ -201,22 +174,11 @@ function hexToHSL(hex) {
   return RGBToHSL(r, g, b)
 }
 
-function hexToHSV(hex) {
-  const { r, g, b } = hexToRGB(hex)
-  return RGBToHSV(r, g, b)
-}
-
 module.exports = {
   hexToHSL,
-  hexToHSV,
-  hexToRGB,
   HSLToHex,
   HSLToHSV,
   HSLToRGB,
-  HSVToHex,
   HSVToHSL,
-  HSVToRGB,
-  RGBToHex,
   RGBToHSL,
-  RGBToHSV,
 }
