@@ -1,5 +1,7 @@
 const {
+  CMYKToHSL,
   hexToHSL,
+  HSLToCMYK,
   HSLToHex,
   HSLToHSV,
   HSLToRGB,
@@ -29,6 +31,12 @@ class Color {
   static fromHex(hex) {
     const out = new Color()
     out.hex = hex
+    return out
+  }
+
+  static fromCMYK(c, m, y, k) {
+    const out = new Color()
+    out.cmyk = [c, m, y, k]
     return out
   }
 
@@ -223,6 +231,39 @@ class Color {
     self._hue = h
     self._saturation = s
     self._lightness = l
+  }
+
+  get cmyk() {
+    const self = this
+    const out = HSLToCMYK(self._hue, self._saturation, self._lightness)
+
+    out.toCSSString = function () {
+      return `cmyk(${(100 * out.c).toFixed(2)}%, ${(100 * out.m).toFixed(
+        2
+      )}%, ${(100 * out.y).toFixed(2)}%, ${(100 * out.k).toFixed(2)}%)`
+    }
+
+    return out
+  }
+
+  set cmyk(data) {
+    const self = this
+
+    if (typeof data === "object" && !(data instanceof Array)) {
+      data = [data.c, data.m, data.y, data.k]
+    }
+
+    if (!(data instanceof Array)) {
+      throw new Error(
+        "The `cmyk` property must be assigned with an array in the form [c, m, y, k] or with an object in the form {c: 0, m: 0, y: 0, k: 0}!"
+      )
+    }
+
+    const [c, m, y, k] = data
+    const temp = CMYKToHSL(c, m, y, k)
+    self._hue = temp.h
+    self._saturation = temp.s
+    self._lightness = temp.l
   }
 }
 
