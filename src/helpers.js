@@ -136,9 +136,9 @@ function HSLToHex(h, s, l) {
   }
 
   const { r, g, b } = HSLToRGB(h, s, l)
-  const rHex = leftPad(r.toString(16), 2)
-  const gHex = leftPad(g.toString(16), 2)
-  const bHex = leftPad(b.toString(16), 2)
+  const rHex = leftPad(parseInt(r).toString(16), 2)
+  const gHex = leftPad(parseInt(g).toString(16), 2)
+  const bHex = leftPad(parseInt(b).toString(16), 2)
   return { value: `${rHex}${gHex}${bHex}` }
 }
 
