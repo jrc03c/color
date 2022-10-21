@@ -17,10 +17,9 @@ function HSLToHSV(h, s, l) {
     )
   }
 
-  const hue = h
   const value = l + s * Math.min(l, 1 - l)
   const saturation = value === 0 ? 0 : 2 * (1 - l / value)
-  return { h: hue, s: saturation, v: value }
+  return { h, s: saturation, v: value }
 }
 
 module.exports = HSLToHSV

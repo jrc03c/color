@@ -37,7 +37,7 @@ function RGBToHSL(r, g, b) {
       : (max - midrange) / Math.min(midrange, 1 - midrange)
 
   const lightness = midrange
-  return { h: hue, s: saturation, l: lightness }
+  return { h: hue - Math.floor(hue / 360) * 360, s: saturation, l: lightness }
 }
 
 module.exports = RGBToHSL
