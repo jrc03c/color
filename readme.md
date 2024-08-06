@@ -1,3 +1,7 @@
+> ⚠️ **NOTE:** ⚠️ This project is being merged into a monorepo [here](https://github.com/jrc03c/monorepo/tree/main/packages/color). This repo will soon be archived.
+
+---
+
 # Intro
 
 This is just a little helper tool to convert between color representations (e.g., RGB to HSL).
